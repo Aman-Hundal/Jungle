@@ -13,9 +13,10 @@ Rails.application.routes.draw do
 
   resources :orders, only: [:create, :show]
 
-  namespace :admin do #more nested routes
+  namespace :admin do #more nested routes namespaced to admin so that we can have and refernce products/new or categories/new under admin and non admin above
     root to: 'dashboard#show' 
     resources :products, except: [:edit, :update, :show] #admin has resoures:procuts nested routes. the get requests are found as follows /admin/products and so on
+    resources :categories, only: [:index, :new, :create]
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
