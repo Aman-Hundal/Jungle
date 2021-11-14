@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   resources :products, only: [:index, :show]
   resources :categories, only: [:show]
+  resources :about, only: [:index]
 
   resource :cart, only: [:show] do #routes/resources after DO are NESTED ROUTES. Cart has two nested POST routes. 
     post   :add_item 
