@@ -5,6 +5,17 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def current_user #to look up the user, if they're logged in, and save their user object to a variable called @current_user. 
+    @current_user ||= User.find(session[:user_id]) if session[:user_id] # saying if current_uesr is falsey/null then itll evaluate to a user object if session id exists(? wtf is that last if statement saying). Session[:user_id] is essentiaully a user.id
+  end 
+  helper_method :current_user #The helper_method line allows us to use @current_user in our view files and anywhere in our app
+  
+  def authorize #simple authorization function. Authorize is for sending someone to the login page if they aren't logged in - this is how we keep certain pages our site secure... user's have to login before seeing them.
+    if !current_user
+      redirect_to '/login'
+    end
+  end
+
   def cart
     @cart ||= cookies[:cart].present? ? JSON.parse(cookies[:cart]) : {}
   end

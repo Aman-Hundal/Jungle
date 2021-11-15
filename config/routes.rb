@@ -6,6 +6,18 @@ Rails.application.routes.draw do
   resources :categories, only: [:show]
   resources :about, only: [:index]
 
+  # Signup routes
+  # These routes will be for signup. The first renders a form in the browse, the second will 
+  # receive the form and create a user in our database using the data given to us by the use.
+  get '/signup' => 'users#new'
+  post '/users' => 'users#create'
+
+  # Session routes. Deal with logging in and out
+  get '/login' => 'session#new'
+  post 'login' => 'session#create'
+  get '/logout' => 'session#destroy'
+
+
   resource :cart, only: [:show] do #routes/resources after DO are NESTED ROUTES. Cart has two nested POST routes. 
     post   :add_item 
     post   :remove_item
