@@ -22,6 +22,11 @@ ActiveRecord::Schema.define(version: 20211114231736) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "favourites", id: false, force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "map_id"
+  end
+
   create_table "line_items", force: :cascade do |t|
     t.integer  "order_id"
     t.integer  "product_id"
@@ -35,12 +40,30 @@ ActiveRecord::Schema.define(version: 20211114231736) do
   add_index "line_items", ["order_id"], name: "index_line_items_on_order_id", using: :btree
   add_index "line_items", ["product_id"], name: "index_line_items_on_product_id", using: :btree
 
+  create_table "maps", force: :cascade do |t|
+    t.string   "title",         limit: 255, null: false
+    t.string   "description",   limit: 255, null: false
+    t.integer  "user_id"
+    t.string   "preview_image", limit: 255, null: false
+    t.datetime "created_at"
+  end
+
   create_table "orders", force: :cascade do |t|
     t.integer  "total_cents"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.string   "stripe_charge_id"
     t.string   "email"
+  end
+
+  create_table "points", force: :cascade do |t|
+    t.string  "title",       limit: 255, null: false
+    t.string  "description", limit: 255, null: false
+    t.float   "latitude",                null: false
+    t.float   "longitude",               null: false
+    t.integer "map_id"
+    t.integer "user_id"
+    t.string  "category",    limit: 255, null: false
   end
 
   create_table "products", force: :cascade do |t|
@@ -65,7 +88,9 @@ ActiveRecord::Schema.define(version: 20211114231736) do
     t.datetime "updated_at",      null: false
   end
 
+  add_foreign_key "favourites", "maps", name: "favourites_map_id_fkey", on_delete: :cascade
   add_foreign_key "line_items", "orders"
   add_foreign_key "line_items", "products"
+  add_foreign_key "points", "maps", name: "points_map_id_fkey", on_delete: :cascade
   add_foreign_key "products", "categories"
 end
