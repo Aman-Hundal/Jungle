@@ -16,6 +16,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def soldout?
+  end
+
   def cart
     @cart ||= cookies[:cart].present? ? JSON.parse(cookies[:cart]) : {}
   end

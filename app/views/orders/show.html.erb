@@ -6,7 +6,11 @@
 
   <div class="order-summary jumbotron">
     <h2>Thank you for your order!</h2>
+    <% if current_user %>
+    <p>Please see details of your order below. Your receipt will be sent to <%= current_user.email %>.</p>
+    <% else %>
     <p>Please see details of your order below. Your receipt will be sent to <%= @order.email %>.</p>
+    <% end %>
   </div>
 
   <div class="panel panel-default items">
@@ -32,7 +36,7 @@
       </tr>
     </tfoot>
   </table>
-  <h2><%= number_to_currency(@order.total_cents / 100) %></h2>
+  <h2><%= humanized_money_with_symbol((@order.total_cents.to_f / 100)) %></h2>
   </div>
 
   <%= link_to "Continue Shopping", root_path, class: 'btn btn-lg btn-primary' %>
